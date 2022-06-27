@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,14 +26,16 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    @Autowired
     private final PostRepository postRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
-        this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
-    }
+//    @Autowired
+//    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+//        this.postRepository = postRepository;
+//        this.modelMapper = modelMapper;
+//    }
 
     /**
      * "@Autowired" spring 4.3 onwards, the bean only have one constructor, so we omit constructor
