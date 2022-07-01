@@ -1,6 +1,8 @@
 package com.chuwa.blog.config;
 
 import com.chuwa.blog.security.CustomUserDetailsService;
+import com.chuwa.blog.security.JwtAuthenticationEntryPoint;
+import com.chuwa.blog.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,13 +60,13 @@ public class SecurityConfig {
 /**
  * 以后用
  */
-//    @Autowired
-//    private JwtAuthenticationEntryPoint authenticationEntryPoint;
-//
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-//        return  new JwtAuthenticationFilter();
-//    }
+    @Autowired
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return  new JwtAuthenticationFilter();
+    }
 
 //    @Bean
 //    PasswordEncoder passwordEncoder(){

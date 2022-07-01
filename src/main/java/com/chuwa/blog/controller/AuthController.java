@@ -2,10 +2,12 @@ package com.chuwa.blog.controller;
 
 import com.chuwa.blog.entity.security.Role;
 import com.chuwa.blog.entity.security.User;
+import com.chuwa.blog.payload.security.JWTAuthResponse;
 import com.chuwa.blog.payload.security.LoginDto;
 import com.chuwa.blog.payload.security.SignUpDto;
 import com.chuwa.blog.repository.security.RoleRepository;
 import com.chuwa.blog.repository.security.UserRepository;
+import com.chuwa.blog.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,6 @@ import java.util.Collections;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -41,15 +40,26 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+//    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()
         ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User sign-in successfully!", HttpStatus.OK);
+
+        // get token from tokenProvide
+        String token = tokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JWTAuthResponse(token));
+//        return new ResponseEntity<>("User sign-in successfully!", HttpStatus.OK);
     }
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
