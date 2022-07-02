@@ -89,6 +89,10 @@ git remote set-url origin https://github.com/TAIsRich/Blog-Securing-APIs.git
 }
 ```
 
+#### ToDo APIs
+
+* Unlike Post 
+
 
 
 #### 2, Favorites
@@ -136,6 +140,10 @@ git remote set-url origin https://github.com/TAIsRich/Blog-Securing-APIs.git
 }
 ```
 
+#### ToDo APIs
+
+* Unfavorite Post 
+
 
 
 #### 3, CommentLikes
@@ -182,6 +190,10 @@ git remote set-url origin https://github.com/TAIsRich/Blog-Securing-APIs.git
   //"total_like": 3 
 }
 ```
+
+#### ToDo APIs
+
+* Unlike Comment 
 
 
 
@@ -231,8 +243,8 @@ git remote set-url origin https://github.com/TAIsRich/Blog-Securing-APIs.git
 
 #### ToDo APIs
 
-* delete comment
-* edit comment 
+* delete reply
+* edit reply 
 
 
 
