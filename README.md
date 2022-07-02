@@ -90,6 +90,10 @@ The main/swagger would be the one I added swagger.
 }
 ```
 
+#### ToDo APIs
+
+* Unlike Post 
+
 
 
 #### 2, Favorites
@@ -137,6 +141,10 @@ The main/swagger would be the one I added swagger.
 }
 ```
 
+#### ToDo APIs
+
+* Unfavorite Post 
+
 
 
 #### 3, CommentLikes
@@ -183,6 +191,10 @@ The main/swagger would be the one I added swagger.
   //"total_like": 3 
 }
 ```
+
+#### ToDo APIs
+
+* Unlike Comment 
 
 
 
@@ -232,8 +244,8 @@ The main/swagger would be the one I added swagger.
 
 #### ToDo APIs
 
-* delete comment
-* edit comment 
+* delete reply
+* edit reply 
 
 
 
