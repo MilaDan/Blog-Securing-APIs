@@ -32,6 +32,9 @@ import java.util.Collections;
 public class AuthController {
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -40,32 +43,22 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @PostMapping("/signin")
-//    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsernameOrEmail(), loginDto.getPassword()
+                loginDto.getAccountOrEmail(), loginDto.getPassword()
         ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // get token from tokenProvide
-        String token = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(token));
-//        return new ResponseEntity<>("User sign-in successfully!", HttpStatus.OK);
+        return new ResponseEntity<>("User sign-in successfully!", HttpStatus.OK);
     }
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
 
         // check if username is in a DB
-        if (userRepository.existsByUserName(signUpDto.getUserName())) {
+        if (userRepository.existsByAccount(signUpDto.getAccount())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
@@ -77,7 +70,7 @@ public class AuthController {
         // create user object
         User user = new User();
         user.setName(signUpDto.getName());
-        user.setUserName(signUpDto.getUserName());
+        user.setAccount(signUpDto.getAccount());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
@@ -85,6 +78,6 @@ public class AuthController {
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
 
-        return new ResponseEntity<>("User registered successfully", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 }

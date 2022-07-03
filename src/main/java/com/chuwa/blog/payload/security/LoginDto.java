@@ -1,27 +1,30 @@
 package com.chuwa.blog.payload.security;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author b1go
  * @date 6/26/22 5:01 PM
  */
 public class LoginDto {
-    private String usernameOrEmail;
+    @JsonProperty("accountOrEmail")
+    private String accountOrEmail;
     private String password;
 
     public LoginDto() {
     }
 
-    public LoginDto(String usernameOrEmail, String password) {
-        this.usernameOrEmail = usernameOrEmail;
+    public LoginDto(String accountOrEmail, String password) {
+        this.accountOrEmail = accountOrEmail;
         this.password = password;
     }
 
-    public String getUsernameOrEmail() {
-        return usernameOrEmail;
+    public String getAccountOrEmail() {
+        return accountOrEmail;
     }
 
-    public void setUsernameOrEmail(String usernameOrEmail) {
-        this.usernameOrEmail = usernameOrEmail;
+    public void setAccountOrEmail(String accountOrEmail) {
+        this.accountOrEmail = accountOrEmail;
     }
 
     public String getPassword() {

@@ -8,14 +8,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SignUpDto {
     private String name;
-    @JsonProperty(value = "user_name")
-    private String userName;
+    @JsonProperty(value = "account")
+    private String account;
     private String email;
     private String password;
 
-    public SignUpDto(String name, String userName, String email, String password) {
+    public SignUpDto(String name, String account, String email, String password) {
         this.name = name;
-        this.userName = userName;
+        this.account = account;
         this.email = email;
         this.password = password;
     }
@@ -28,12 +28,12 @@ public class SignUpDto {
         this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getEmail() {

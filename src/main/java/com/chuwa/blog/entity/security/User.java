@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_name"}),
+        @UniqueConstraint(columnNames = {"account"}),
         @UniqueConstraint(columnNames = {"email"})
 })
 public class User {
@@ -18,8 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @Column(name = "user_name")
-    private String userName;
+    private String account;
     private String email;
     private String password;
 
@@ -33,12 +32,13 @@ public class User {
     public User() {
     }
 
-    public User(long id, String name, String userName, String email, String password) {
+    public User(long id, String name, String account, String email, String password, Set<Role> roles) {
         this.id = id;
         this.name = name;
-        this.userName = userName;
+        this.account = account;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public long getId() {
@@ -57,12 +57,12 @@ public class User {
         this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getEmail() {
