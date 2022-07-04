@@ -116,7 +116,7 @@ The main/swagger would be the one I added swagger.
 {
   "post_id":1234,
   "user_id":456, //Or, get from UserSession 
-  "status":1  // 0 - unfavorite  
+  //"status":1  // default = 1, default = 0 - unfavorite  
 }
 ```
 
@@ -221,6 +221,8 @@ The main/swagger would be the one I added swagger.
 }
 ```
 
+
+
 **URL** : `/api/post/{postId}/comments/{commentId}/reply`
 
 **Method** : `GET`
@@ -237,9 +239,81 @@ The main/swagger would be the one I added swagger.
 
 ```json
 {
-  "reply":["this reply one", "this reply two", "this reply three"]
+  "commentId": 123,
+  "reply":[{"id":456,
+  				 "name:":"Alice", 
+           "body":"this reply one"},
+				   {"id":457,
+  				 "name:":"Billy", 
+           "body":"this reply two"},
+					 ...]
   //"total_reply": 3 
 }
+```
+
+```java
+class Reply{
+	private long id;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "comment_id", nullable = false)
+  private Comment comment;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
+
+  private String body;
+  //...
+}
+
+class ReplyDTO{
+	private long id;
+  private String name;
+  private String body; 
+	//...  
+}
+
+//Inside yoru Comment & CommentDto
+
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @JsonProperty("name")
+    private String name;
+    private String email;
+    private String body;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
+  
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id", nullable = false)
+    private List<Reply> replies;
+}
+
+public class CommentDto {
+    private long id;
+    @NotEmpty(message = "Name should not be null or empty")
+    private String name;
+
+    @NotEmpty(message = "Email should not be null or empty")
+    @Email
+    private String email;
+    @NotEmpty
+    @Size(min = 5, message = "Comment body must be minimum 5 characters")
+    private String body;
+  
+    //Need to add the following 
+    private List<ReplyDTO> replies;  //Nested replyDTO 
+}
+
+	 //Now to make sure update your `CommentServiceImpl` to support the ReplyDTO convert by add the line: 
+    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
 ```
 
 #### ToDo APIs
@@ -273,7 +347,9 @@ The main/swagger would be the one I added swagger.
 }
 ```
 
-**URL** : `/api/follower`
+
+
+**URL** : `/api/follower/{userId}`
 
 **Method** : `GET`
 
