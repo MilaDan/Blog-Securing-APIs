@@ -2,6 +2,8 @@ package com.chuwa.blog.controller;
 
 import com.chuwa.blog.payload.CommentDto;
 import com.chuwa.blog.service.CommentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,9 @@ import java.util.List;
  * @author b1go
  * @date 6/23/22 11:30 PM
  */
+@Api(value = "CRUD REST APIs for Comment Resource")
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/v1")
 public class CommentController {
 
     /**
@@ -34,17 +37,20 @@ public class CommentController {
      * <p>
      * 此时此刻，思考为什么post的ID是pathVariable 而不是request parameter?
      */
+    @ApiOperation(value = "Create Comment REST API")
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") long id,
                                                     @Valid @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Get All Comments by Post ID REST API")
     @GetMapping("/posts/{postId}/comments")
     public List<CommentDto> getCommentsByPostId(@PathVariable(value = "postId") Long postId) {
         return commentService.getCommentsByPostId(postId);
     }
 
+    @ApiOperation(value = "Get single Comment by ID REST API")
     @GetMapping("/posts/{postId}/comments/{id}")
     public ResponseEntity<CommentDto> getCommentsById(
             @PathVariable(value = "postId") Long postId,
@@ -54,6 +60,7 @@ public class CommentController {
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Update single Comment by ID REST API")
     @PutMapping("/posts/{postId}/comments/{id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable(value = "postId") Long postId,
                                                     @PathVariable(value = "id") Long commentId,
@@ -62,6 +69,7 @@ public class CommentController {
         return new ResponseEntity<>(updateComment, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Delete single Comment by ID REST API")
     @DeleteMapping("/posts/{postId}/comments/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable(value = "postId") Long postId,
                                                 @PathVariable(value = "id") Long commentId) {

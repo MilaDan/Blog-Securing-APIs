@@ -8,6 +8,8 @@ import com.chuwa.blog.payload.security.SignUpDto;
 import com.chuwa.blog.repository.security.RoleRepository;
 import com.chuwa.blog.repository.security.UserRepository;
 import com.chuwa.blog.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,9 @@ import java.util.Collections;
  * @author b1go
  * @date 6/26/22 5:03 PM
  */
+@Api(value = "Auth controller with JWT exposes signin and signup REST APIs")
 @RestController
-@RequestMapping("/api/auth/jwt")
+@RequestMapping("/api/v1/auth/jwt")
 public class AuthJWTController {
 
     @Autowired
@@ -46,6 +49,7 @@ public class AuthJWTController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @ApiOperation(value = "JWT REST API to Signin or Login user to Blog app")
     @PostMapping("/signin")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -61,6 +65,7 @@ public class AuthJWTController {
         return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
+    @ApiOperation(value = "JWT REST API to Register or Signup user to Blog app")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
 

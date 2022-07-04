@@ -1,6 +1,9 @@
 package com.chuwa.blog.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -11,15 +14,22 @@ import java.util.Objects;
  * @author b1go
  * @date 6/23/22 11:10 PM
  */
+@Api(value = "Comment model info")
 public class CommentDto {
 
+    @ApiModelProperty(value = "Comment id")
     private long id;
+
+    @ApiModelProperty(value = "Comment name")
     @NotEmpty(message = "Name should not be null or empty")
     private String name;
 
+    @ApiModelProperty(value = "Comment email")
     @NotEmpty(message = "Email should not be null or empty")
     @Email
     private String email;
+
+    @ApiModelProperty(value = "Comment body")
     @NotEmpty
     @Size(min = 5, message = "Comment body must be minimum 5 characters")
     private String body;
