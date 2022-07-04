@@ -27,7 +27,7 @@ public class JwtTokenProvider {
      * @param authentication
      * @return
      */
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationInMs);
@@ -38,6 +38,7 @@ public class JwtTokenProvider {
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+
         return token;
     }
 
@@ -46,11 +47,12 @@ public class JwtTokenProvider {
      * @param token
      * @return
      */
-    public String getUsernameFromJWT(String token){
+    public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
+
         return claims.getSubject();
     }
 
@@ -59,7 +61,7 @@ public class JwtTokenProvider {
      * @param token
      * @return
      */
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try{
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;

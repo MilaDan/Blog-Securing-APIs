@@ -31,8 +31,9 @@ git remote set-url origin https://github.com/TAIsRich/blog-rest-api.git
 git remote set-url origin https://github.com/TAIsRich/Blog-mapper-exception-validation.git
 ```
 
-### Blog-mapper-exception-validation
+### Blog-Securing-APIs
 ```
 git remote set-url origin https://github.com/TAIsRich/Blog-Securing-APIs.git
 ```
+The main/swagger would be the one I added swagger.
 
