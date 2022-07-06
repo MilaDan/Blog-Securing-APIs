@@ -8,6 +8,8 @@ import com.chuwa.blog.payload.security.SignUpDto;
 import com.chuwa.blog.repository.security.RoleRepository;
 import com.chuwa.blog.repository.security.UserRepository;
 import com.chuwa.blog.security.JwtTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,12 @@ public class AuthJWTController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthJWTController.class);
+
     @PostMapping("/signin")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+        logger.info(loginDto.getAccountOrEmail() + "is trying to sign in our application");
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getAccountOrEmail(), loginDto.getPassword()
         ));
@@ -57,12 +63,13 @@ public class AuthJWTController {
         // get token from tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
-
+        logger.info(loginDto.getAccountOrEmail() + "sign in successfully");
         return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+        logger.info("New User is trying to sign up our application");
 
         // check if username is in a DB
         if (userRepository.existsByAccount(signUpDto.getAccount())) {
@@ -85,6 +92,7 @@ public class AuthJWTController {
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
 
+        logger.info("User registered successfully");
         return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 }
