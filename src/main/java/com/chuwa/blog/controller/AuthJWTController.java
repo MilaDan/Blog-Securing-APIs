@@ -8,6 +8,8 @@ import com.chuwa.blog.payload.security.SignUpDto;
 import com.chuwa.blog.repository.security.RoleRepository;
 import com.chuwa.blog.repository.security.UserRepository;
 import com.chuwa.blog.security.JwtTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ import java.util.Collections;
 @RequestMapping("/api/auth/jwt")
 public class AuthJWTController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthJWTController.class);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -48,6 +52,12 @@ public class AuthJWTController {
 
     @PostMapping("/signin")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+        logger.trace("A TRACE Message");
+        logger.debug("A DEBUG Message");
+        logger.info("An INFO Message");
+        logger.warn("A WARN Message");
+        logger.error("An ERROR Message");
+        logger.info(loginDto.getAccountOrEmail() + "is trying to sign in our application");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getAccountOrEmail(), loginDto.getPassword()
         ));
@@ -57,7 +67,7 @@ public class AuthJWTController {
         // get token from tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
-
+        logger.info(loginDto.getAccountOrEmail() + "sign in successfully");
         return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
